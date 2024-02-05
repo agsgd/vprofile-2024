@@ -1,0 +1,47 @@
+version: "3.0.1"
+services:
+  mysqlagscom:
+    build:
+     context: ./docker-files/db
+    image: agsgd/vprofileadb
+    container_name: vprofileadb
+    ports:
+      - "3306:3306"
+    volumes:
+      - myvolume:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=Gabbarsingh2024
+    
+  memcachedagscom:
+    image: memcached
+    ports:
+      - "11211:11211"
+
+  rabbitmqagscom:
+    image: rabbitmq
+    ports:  
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
+  vprofileapp:
+    build:
+     context: ./docker-files/app
+    image: agsgd/vprofileapp
+    container_name: vprofileapp
+    ports:
+      - "8080:8080"
+    volumes:
+      - myvolumeapp:/usr/local/tomcat/webapps
+  vprofileweb:
+    build:
+     context: ./docker-files/web/
+    image: agsgd/vprofileweb
+    container_name: vprofileweb
+    ports:
+      - "80:80"
+
+volumes:
+  myvolume: {}
+  myvolumeapp: {  }
