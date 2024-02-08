@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-db
+spec:  
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-db
+  template:
+    metadata:
+      labels:
+        app: my-db
+    spec:
+      containers:
+      - name: my-db
+        image: agsgd/vprofiledb:latest
+        ports:
+          - containerPort: 3306
+            name: db-port
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: db-pass
+        volumeMounts:
+        - name: azure-storage
+          mountPath: /var/lib/mysql
+      volumes: 
+        - name: azure-storage 
+          persistentVolumeClaim: 
+            claimName: azurefile-pvc-fips
+---            
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqlagscom
+spec:
+  selector:
+    app: my-db
+  ports:
+  - port: 3306
+    targetPort: db-port
+    protocol: TCP
+  type: ClusterIP
+                   

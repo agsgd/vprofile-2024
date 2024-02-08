@@ -1,0 +1,11 @@
+apiVersion: v1 
+kind: PersistentVolumeClaim 
+metadata: 
+  name: azurefile-pvc-fips 
+spec: 
+  accessModes: 
+    - ReadWriteMany 
+  storageClassName: azurefile-sc-fips 
+  resources: 
+    requests: 
+      storage: 100Gi

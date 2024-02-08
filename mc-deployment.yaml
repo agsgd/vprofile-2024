@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-mc
+spec:  
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-mc
+  template:
+    metadata:
+      labels:
+        app: my-mc
+    spec:
+      containers:
+      - name: my-mc
+        image: memcached
+        ports:
+          - containerPort: 11211
+            name: mc-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memcachedagscom
+spec:
+  
+  selector:
+    app: my-mc
+  ports:
+  - port: 11211
+    targetPort: mc-port
+    protocol: TCP

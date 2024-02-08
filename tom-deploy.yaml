@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-tom
+spec:  
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-tom
+  template:
+    metadata:
+      labels:
+        app: my-tom
+    spec:
+      containers:
+      - name: my-tom
+        image: agsgd/vprofileapp:latest
+        ports:
+          - containerPort: 8080
+            name: tom-port
+      # initContainers:
+      #   - name: init-mydb
+      #     image: busybox
+      #     command: ['sh', '-c', 'until lookup my-db; do echo waiting for mydb;sleep 2 ;done;']
+      #   - name: init-mymc
+      #     image: busybox
+      #     command: ['sh', '-c', 'until lookup my-mc; do echo waiting for mymc;sleep 2 ;done;']    
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-tom-svc
+spec:
+  selector:
+    app: my-tom
+  ports:
+  - port: 80
+    targetPort: tom-port
+    protocol: TCP
+  type: LoadBalancer
+      

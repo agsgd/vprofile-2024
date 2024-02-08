@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-rmq
+spec:  
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-rmq
+  template:
+    metadata:
+      labels:
+        app: my-rmq
+    spec:
+      containers:
+      - name: my-rmq
+        image: rabbitmq
+        ports:
+          - containerPort: 15672
+            name: rmq-port
+        env:
+          - name: RABBITMQ_DEFAULT_PASS
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: rabbitmq-pass
+          - name: RABBITMQ_DEFAULT_USER
+            value: "guest"
+              
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmqagscom
+spec:
+  selector:
+    app: my-rmq
+  ports:
+  - port: 15672
+    targetPort: rmq-port
+    protocol: TCP
+  type: ClusterIP
+
