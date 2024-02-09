@@ -20,3 +20,13 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+
+
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'Free Trial(e52f744d-5933-4c15-899b-8229737e4d75)'
+    azureContainerRegistry: '{"loginServer":"acreast.azurecr.io", "id" : "/subscriptions/e52f744d-5933-4c15-899b-8229737e4d75/resourceGroups/acr-grp/providers/Microsoft.ContainerRegistry/registries/acreast"}'
+    dockerComposeFile: '**/compose.yaml'
+    action: 'Run a Docker Compose command'
+    dockerComposeCommand: 'docker compose build'
