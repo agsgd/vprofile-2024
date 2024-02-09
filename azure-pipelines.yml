@@ -27,6 +27,6 @@ steps:
     containerregistrytype: 'Azure Container Registry'
     azureSubscription: 'Free Trial(e52f744d-5933-4c15-899b-8229737e4d75)'
     azureContainerRegistry: '{"loginServer":"acreast.azurecr.io", "id" : "/subscriptions/e52f744d-5933-4c15-899b-8229737e4d75/resourceGroups/acr-grp/providers/Microsoft.ContainerRegistry/registries/acreast"}'
-    dockerComposeFile: $(Build.SourcesDirectory)/compose.yaml'
+    dockerComposeFile: /home/vsts/work/1/compose.yaml'
     action: 'Run a Docker Compose command'
     dockerComposeCommand: 'docker compose build'
